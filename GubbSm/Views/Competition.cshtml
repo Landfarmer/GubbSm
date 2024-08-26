@@ -1,0 +1,34 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.CompetitionPage>
+
+@using Clean.Core.Models.ViewModels
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core
+@using Clean.Core.Extensions
+
+@{
+    Layout = "master.cshtml";
+    var competitionTitle = Model.Title;
+    var competitionIntro = Model.Introduction;
+    var challenges = Model.Challenges;
+}
+
+@await Html.PartialAsync("~/Views/Partials/pageHeader.cshtml", new PageHeaderViewModel(Model.Name, competitionTitle, null, Model.MainImage, null, null, null))
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <h2>@competitionTitle</h2>
+                <p>@competitionIntro</p>
+                <ul class="list-group">
+                    @foreach (var challenge in challenges)
+                    {
+                        <li class="list-group-item">
+                            <a href="@challenge.Url">@challenge.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,29 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Challenge>
+
+@using Clean.Core.Models.ViewModels
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core
+@using Clean.Core.Extensions
+
+@{
+    Layout = "master.cshtml";
+    var challengeTitle = Model.Title;
+    var challengeDescription = Model.Description;
+    var challengePoints = Model.Points;
+}
+
+@await Html.PartialAsync("~/Views/Partials/pageHeader.cshtml", new PageHeaderViewModel(Model.Name, challengeTitle, null, Model.MainImage, null, null, null))
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <h2>@challengeTitle</h2>
+                <p>@challengeDescription</p>
+                <p><strong>Points:</strong> @challengePoints</p>
+
+                @await Html.PartialAsync("~/Views/MacroPartials/Checkbox.cshtml")
+            </div>
+        </div>
+    </div>
+</article>

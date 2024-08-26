@@ -1,9 +1,56 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@inject Umbraco.Cms.Core.Security.IMemberManager MemberManager
+@inject Umbraco.Cms.Core.Services.IMemberService MemberService
+
+@{
+    // Get the current logged-in member
+    var currentMember = await MemberManager.GetCurrentMemberAsync();
+    var challengeId = Model.Content.Id;
+    var completed = false;
+
+    if (currentMember != null)
+    {
+        var root = Umbraco.ContentAtRoot().FirstOrDefault(); // Get the first root node
+        if (root != null)
+        {
+            var progress = root.DescendantsOrSelf("memberProgress")
+                               .Where(p => p.Value<Guid>("member") == currentMember.Key && p.Id == challengeId)
+                               .FirstOrDefault();
+
+            if (progress != null)
+            {
+                completed = progress.Value<bool>("completed");
+            }
+        }
+    }
+}
 
 <fieldset>
-  <legend>Utmaning:</legend>
+    <legend>@Model.Content.Name</legend>
     <div>
-      <input type="checkbox" id="Finished" name="Finished" />
-      <label for="Finished">Utförd</label>
+        <input type="checkbox" id="Finished" name="Finished" @(completed ? "checked" : "")
+        @(currentMember == null ? "disabled" : "")
+               onchange="updateChallengeStatus(@challengeId, this.checked)" />
+        <label for="Finished">Utförd</label>
     </div>
 </fieldset>
+
+<script>
+    function updateChallengeStatus(challengeId, status) {
+        // Make an AJAX call to update the challenge status for the logged-in member
+        $.ajax({
+            url: '/api/Challenge/UpdateStatus',
+            type: 'POST',
+            data: {
+                challengeId: challengeId,
+                status: status
+            },
+            success: function (data) {
+                alert('Status updated successfully!');
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred while updating the status.');
+            }
+        });
+    }
+</script>
