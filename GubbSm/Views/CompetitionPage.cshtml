@@ -1,6 +1,35 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.CompetitionPage>
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.CompetitionPage>
+
+@using Clean.Core.Models.ViewModels
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core
+@using Clean.Core.Extensions
+
 @{
-	Layout = null;
+    Layout = "master.cshtml";
+    var competitionTitle = Model.Title;
+    var competitionIntro = Model.Subtitle;
+    var challenges = Model.Value<IEnumerable<IPublishedContent>>("challengePage");
+
 }
+
+@await Html.PartialAsync("~/Views/Partials/pageHeader.cshtml", new PageHeaderViewModel(Model.Name, competitionTitle, null, Model.MainImage, null, null, null))
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <h2>@competitionTitle</h2>
+                <p>@competitionIntro</p>
+                <ul class="list-group">
+                    @foreach (var challenge in challenges)
+                    {
+                        <li class="list-group-item">
+                            <a href="@challenge.UrlSegment">Hej</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</article>
