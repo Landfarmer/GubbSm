@@ -1,15 +1,23 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Challenge>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ChallengePage>
 
 @using Clean.Core.Models.ViewModels
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Security
 @using Clean.Core.Extensions
+@using Umbraco.Cms.Core.Services
+@inject IMemberManager _memberManager;
+@inject IContentService _contentService
 
 @{
     Layout = "master.cshtml";
     var challengeTitle = Model.Title;
     var challengeDescription = Model.Description;
     var challengePoints = Model.Points;
+    var challengeId = Model.Id;
+    var userChallengeStatus = _contentService.GetById(challengeId);
+    var member = _memberManager.GetCurrentMemberAsync();
+    var memberId = member?.Id ?? 0;
 }
 
 @await Html.PartialAsync("~/Views/Partials/pageHeader.cshtml", new PageHeaderViewModel(Model.Name, challengeTitle, null, Model.MainImage, null, null, null))
@@ -22,8 +30,24 @@
                 <p>@challengeDescription</p>
                 <p><strong>Points:</strong> @challengePoints</p>
 
-                @await Html.PartialAsync("~/Views/MacroPartials/Checkbox.cshtml")
+                <p><strong>Completed:</strong> @Html.CheckBox("Completed", Model.Completed)</p>
             </div>
         </div>
     </div>
 </article>
+
+<script>
+    document.querySelector('#completedCheckbox').addEventListener('change', function(event) {
+        fetch('/umbraco/api/userchallengestatus/updatestatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: @memberId,
+                challengeId: @challengeId,
+                completed: event.target.checked
+            })
+        });
+    });
+</script>

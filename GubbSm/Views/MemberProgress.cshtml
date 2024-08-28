@@ -8,7 +8,11 @@
 @{
     Layout = "master.cshtml";
     var member = Model.Member;
-    var completedChallenges = Model.Content.ChildrenOfType("memberProgress").Where(x => x.Value<bool>("completed"));
+
+    var completedChallenges = Model.Children
+        .Select(x => new { Progress = x, Challenge = x.Value<IPublishedContent>("challenge") })
+        .Where(x => x.Challenge != null && x.Challenge.Value<bool>("completed"));
+
 }
 
 @await Html.PartialAsync("~/Views/Partials/pageHeader.cshtml", new PageHeaderViewModel(Model.Name, "Progress for " + member.Name, null, null, null, null, null))
@@ -21,10 +25,13 @@
                 <ul class="list-group">
                     @foreach (var progress in completedChallenges)
                     {
-                        var challenge = progress.Value<IPublishedContent>("challenge");
-                        <li class="list-group-item">
-                            <a href="@challenge.Url">@challenge.Name</a> - @progress.Value<int>("score") Points
-                        </li>
+                        var challenge = progress.Challenge;
+                        if (challenge != null)
+                        {
+                            <li class="list-group-item">
+                                <a href="@challenge.Url()">@challenge.Name</a>
+                            </li>
+                        }
                     }
                 </ul>
             </div>

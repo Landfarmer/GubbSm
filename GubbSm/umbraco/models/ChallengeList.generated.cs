@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Challenge Row Settings</summary>
-	[PublishedModel("challengeRowSettings")]
-	public partial class ChallengeRowSettings : PublishedElementModel, IHideProperty, ISpacingProperties
+	/// <summary>Challenge List</summary>
+	[PublishedModel("challengeList")]
+	public partial class ChallengeList : PublishedContentModel, IContentControls, IHeaderControls, IListPageSettings, IMainImageControls, ISEocontrols, IVisibilityControls
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
-		public new const string ModelTypeAlias = "challengeRowSettings";
+		public new const string ModelTypeAlias = "challengeList";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
@@ -34,14 +34,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<ChallengeRowSettings, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<ChallengeList, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public ChallengeRowSettings(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public ChallengeList(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,74 +50,80 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Hide: Set this to true if you want to hide this row from the front end of the site
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
-		[ImplementPropertyType("hide")]
-		public virtual bool Hide => global::Umbraco.Cms.Web.Common.PublishedModels.HideProperty.GetHide(this, _publishedValueFallback);
-
-		///<summary>
-		/// Margin Bottom
+		/// Content Rows: Add the rows of content for the page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("marginBottom")]
-		public virtual string MarginBottom => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetMarginBottom(this, _publishedValueFallback);
+		[ImplementPropertyType("contentRows")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel ContentRows => global::Umbraco.Cms.Web.Common.PublishedModels.ContentControls.GetContentRows(this, _publishedValueFallback);
 
 		///<summary>
-		/// Margin Left
+		/// Subtitle: Enter a subtitle for this page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("marginLeft")]
-		public virtual string MarginLeft => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetMarginLeft(this, _publishedValueFallback);
+		[ImplementPropertyType("subtitle")]
+		public virtual string Subtitle => global::Umbraco.Cms.Web.Common.PublishedModels.HeaderControls.GetSubtitle(this, _publishedValueFallback);
 
 		///<summary>
-		/// Margin Right
+		/// Title: Enter the title for the page. If this is empty the name of the page will be used.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("marginRight")]
-		public virtual string MarginRight => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetMarginRight(this, _publishedValueFallback);
+		[ImplementPropertyType("title")]
+		public virtual string Title => global::Umbraco.Cms.Web.Common.PublishedModels.HeaderControls.GetTitle(this, _publishedValueFallback);
 
 		///<summary>
-		/// Margin Top
+		/// Main Image: Choose the main image for this page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("marginTop")]
-		public virtual string MarginTop => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetMarginTop(this, _publishedValueFallback);
+		[ImplementPropertyType("mainImage")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops MainImage => global::Umbraco.Cms.Web.Common.PublishedModels.MainImageControls.GetMainImage(this, _publishedValueFallback);
 
 		///<summary>
-		/// Padding Bottom
+		/// Meta Description: Enter the meta description for this page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("paddingBottom")]
-		public virtual string PaddingBottom => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetPaddingBottom(this, _publishedValueFallback);
+		[ImplementPropertyType("metaDescription")]
+		public virtual string MetaDescription => global::Umbraco.Cms.Web.Common.PublishedModels.SEocontrols.GetMetaDescription(this, _publishedValueFallback);
 
 		///<summary>
-		/// Padding Left
+		/// Meta Keywords: Enter the keywords for this page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("paddingLeft")]
-		public virtual string PaddingLeft => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetPaddingLeft(this, _publishedValueFallback);
+		[ImplementPropertyType("metaKeywords")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> MetaKeywords => global::Umbraco.Cms.Web.Common.PublishedModels.SEocontrols.GetMetaKeywords(this, _publishedValueFallback);
 
 		///<summary>
-		/// Padding Right
+		/// Meta Name: Enter the meta name for this page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("paddingRight")]
-		public virtual string PaddingRight => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetPaddingRight(this, _publishedValueFallback);
+		[ImplementPropertyType("metaName")]
+		public virtual string MetaName => global::Umbraco.Cms.Web.Common.PublishedModels.SEocontrols.GetMetaName(this, _publishedValueFallback);
 
 		///<summary>
-		/// Padding Top
+		/// Hide From Top Navigation
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("paddingTop")]
-		public virtual string PaddingTop => global::Umbraco.Cms.Web.Common.PublishedModels.SpacingProperties.GetPaddingTop(this, _publishedValueFallback);
+		[ImplementPropertyType("hideFromTopNavigation")]
+		public virtual bool HideFromTopNavigation => global::Umbraco.Cms.Web.Common.PublishedModels.VisibilityControls.GetHideFromTopNavigation(this, _publishedValueFallback);
+
+		///<summary>
+		/// Hide From XML Sitemap: Tick this if you want to hide this page from the XML sitemap
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
+		[ImplementPropertyType("hideFromXMLSitemap")]
+		public virtual bool HideFromXmlsitemap => global::Umbraco.Cms.Web.Common.PublishedModels.VisibilityControls.GetHideFromXmlsitemap(this, _publishedValueFallback);
+
+		///<summary>
+		/// Hide From Search: Tick this box if you want to hide this page from the navigation and from search results
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.4.1+d72fc5c")]
+		[ImplementPropertyType("umbracoNaviHide")]
+		public virtual bool UmbracoNaviHide => global::Umbraco.Cms.Web.Common.PublishedModels.VisibilityControls.GetUmbracoNaviHide(this, _publishedValueFallback);
 	}
 }

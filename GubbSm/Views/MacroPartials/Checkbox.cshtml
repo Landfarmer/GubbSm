@@ -1,6 +1,7 @@
-﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ChallengePage>
 @inject Umbraco.Cms.Core.Security.IMemberManager MemberManager
 @inject Umbraco.Cms.Core.Services.IMemberService MemberService
+
 
 @{
     // Get the current logged-in member

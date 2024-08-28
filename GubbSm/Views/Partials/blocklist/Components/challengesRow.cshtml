@@ -1,0 +1,62 @@
+﻿@inherits UmbracoViewPage<BlockListItem>
+@using Umbraco.Cms.Core.Models.Blocks
+@using Clean.Core.Extensions
+@using Clean.Core.Helpers
+
+@{
+    var row = Model.Content as ChallengesRow;
+    var settings = Model.Settings as LatestArticlesRowSettings;
+    if (settings?.Hide ?? false) { return; }
+
+    var spacingClasses = "";
+    if (Model.Settings is ISpacingProperties spacing)
+    {
+        spacingClasses = SpacingHelper.GetSpacingClasses(spacing.PaddingTop, spacing.PaddingBottom, spacing.PaddingLeft, spacing.PaddingRight, spacing.MarginTop, spacing.MarginBottom, spacing.MarginLeft, spacing.MarginRight);
+    }
+
+    var pageSize = row.PageSize;
+    var pageNumber = QueryStringHelper.GetIntFromQueryString(Context.Request.Query, "page", 1);
+    var allChallenges = row.ChallengeList.Children<ChallengePage>().Where(x => x.IsVisible()).OrderByDescending(x => x.Name) ?? Enumerable.Empty<ChallengePage>();
+    var pageOfChallenges = allChallenges.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+    var totalItemCount = allChallenges.Count();
+    var pageCount = totalItemCount > 0 ? Math.Ceiling((double)totalItemCount / pageSize) : 1;
+}
+
+<div class="row clearfix @(spacingClasses)">
+    <div class="col-md-12 column">
+        @foreach (var challenge in pageOfChallenges)
+        {
+            bool.TryParse(challenge.Value<string>("showFullChallengeOnListPage", fallback: Fallback.ToAncestors), out var showFullChallengeOnListPage);
+
+            <div class="post-preview">
+                <a href="@challenge.Url()">
+                    <h2 class="post-title">
+                        @(!string.IsNullOrWhiteSpace(challenge.Title) ? challenge.Title : challenge.Name)
+                    </h2>
+                    @if (!string.IsNullOrWhiteSpace(challenge.Name))
+                    {
+                        <h3 class="post-subtitle">@challenge.Name</h3>
+                    }
+                </a>
+            </div>
+
+            @if (showFullChallengeOnListPage)
+
+            {
+                <div class="row">
+                    <div class="col-12">
+                        @Html.GetBlockListHtml(challenge.ContentRows)
+                    </div>
+                </div>
+            }
+
+            <hr>
+        }
+
+        @if (row.ShowPagination)
+        {
+            @await Component.InvokeAsync("Pagination", new { totalItems = totalItemCount, url = row.ChallengeList.Url(), pageNumber = pageNumber, pageSize = pageSize })
+        }
+    </div>
+</div>
+
